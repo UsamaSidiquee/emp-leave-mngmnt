@@ -7,66 +7,12 @@ body {
   font-family: sans-serif;
   background-image: url(/images/l&t.png);
   background-repeat: no-repeat;
+  background-attachment: fixed;
   background-position: center;
   background-size: 400px 400px;
 }
 
 .img {
   width: 50px;
-  margin: auto 40px auto auto;
-}
-
-.menu-bar {
-  background: #3498db;
-  text-align: center;
-}
-.menu-bar ul {
-  display: inline-flex;
-  list-style: none;
-  color: #fff;
-}
-.menu-bar ul li {
-  width: 120px;
-  margin: 15px;
-  padding: 15px;
-}
-.menu-bar ul li a {
-  text-decoration: none;
-  color: #fff;
-}
-.active,
-.menu-bar ul li:hover {
-  background: #21618c;
-  border-radius: 3px;
-}
-.menu-bar .fa {
-  margin-right: 8px;
-}
-.sub-menu-1 {
-  display: none;
-}
-.menu-bar ul li:hover .sub-menu-1 {
-  display: block;
-  position: absolute;
-  background-color: #21618c;
-  margin-top: 15px;
-  margin-left: -15px;
-}
-.menu-bar ul li:hover .sub-menu-1 ul {
-  display: block;
-  margin: 10px;
-}
-.menu-bar ul li:hover .sub-menu-1 ul li {
-  width: 150px;
-  padding: 10px;
-  border-bottom: 1px dotted#fff;
-  background: transparent;
-  border-radius: 0;
-  text-align: left;
-}
-.menu-bar ul li:hover .sub-menu-1 ul li:last-child {
-  border-bottom: none;
-}
-.menu-bar ul li:hover .sub-menu-1 ul li a:hover {
-  color: aquamarine;
+  height: 50px;
 }

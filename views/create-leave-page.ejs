@@ -1,0 +1,87 @@
+<html>
+  <head>
+    <%- include('./partials/head.ejs') %>
+    <link href="/styles/form-validation.css" rel="stylesheet" />
+  </head>
+  <body>
+    <%- include('./partials/nav.ejs') %>
+    <div class="container col-md-8 order-md-1">
+      <h4 class="my-3 text-center">Apply Leave</h4>
+      <form class="form">
+        <div class="col-md-6 mb-3">
+          <label for="firstName">Reason</label>
+          <input
+            type="text"
+            class="form-control"
+            id="reason"
+            placeholder="Reason"
+            required
+          />
+          <div class="invalid-feedback">Valid first name is required.</div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="lastName">Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="dateOfLeave"
+            placeholder="Leave Date"
+            min="<%= todaysDate %>"
+            max="<%= yearFromNow %>"
+            required
+          />
+          <div class="invalid-feedback">Valid last name is required.</div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="country">Country</label>
+          <select class="custom-select d-block w-100" id="type" required>
+            <option value="">Time</option>
+            <option value="FULL">Full Day</option>
+            <option value="HALF">Half Day</option>
+          </select>
+          <div class="invalid-feedback">Please select a valid country.</div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <button class="btn btn-primary btn-lg btn-block" type="submit">
+            Apply leave
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
+  <script>
+    var form = document.querySelector(".form");
+    // Loop over them and prevent submission
+    console.log(form);
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const reason = form.reason.value;
+      const dateOfLeave = form.dateOfLeave.value;
+      const type = form.type.value;
+
+      if (!reason || !dateOfLeave || !type) {
+        // bodyError.textContent = `Please Fill in all the Feilds!!`;
+        console.log("eerr");
+      } else {
+        try {
+          const res = await fetch("/user/apply-leave", {
+            method: "POST",
+            body: JSON.stringify({ reason, dateOfLeave, type }),
+            headers: { "Content-Type": "application/json" },
+          });
+          const data = await res.json();
+          if (data.errors) {
+            console.log(data.errors);
+          }
+          if (data.leave) {
+            location.assign("/");
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    });
+  </script>
+  <%- include ('./partials/footer.ejs') %>
+</html>

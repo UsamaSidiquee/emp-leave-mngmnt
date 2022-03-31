@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <link rel="stylesheet" href="/styles/log-in.css" />
+    <script
+      src="https://kit.fontawesome.com/9b31e77fc6.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="screen">
+        <div class="screen__content">
+          <img src="/images/ltgrouplogo.png" class="logo-image" alt="" />
+          <form class="login">
+            <div class="login__field">
+              <i class="login__icon fas fa-user"></i>
+              <input
+                name="user_email"
+                id="email"
+                type="text"
+                class="login__input"
+                placeholder="Email"
+                required
+              />
+            </div>
+            <div class="login__field">
+              <i class="login__icon fas fa-user"></i>
+              <input
+                name="user_name"
+                id="name"
+                type="text"
+                class="login__input"
+                placeholder="User name"
+                required
+              />
+            </div>
+            <div class="login__field">
+              <i class="login__icon fas fa-lock"></i>
+              <input
+                name="user_password"
+                id="password"
+                type="password"
+                class="login__input"
+                placeholder="Password"
+                required
+              />
+            </div>
+            <div class="password error"></div>
+            <div class="login__field">
+              <button class="button login__submit">
+                <span type="submit" class="button__text">Sign Up</span>
+                <i class="button__icon fas fa-chevron-right"></i>
+              </button>
+              <a href="./log-in" class="button login__submit">Log in?</a>
+            </div>
+          </form>
+        </div>
+        <div class="screen__background">
+          <span
+            class="screen__background__shape screen__background__shape4"
+          ></span>
+          <span
+            class="screen__background__shape screen__background__shape3"
+          ></span>
+          <span
+            class="screen__background__shape screen__background__shape2"
+          ></span>
+          <span
+            class="screen__background__shape screen__background__shape1"
+          ></span>
+        </div>
+      </div>
+    </div>
+    <script>
+      const form = document.querySelector("form");
+      const passwordError = document.querySelector(".password.error");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        console.log("first");
+        // reset errors
+        passwordError.textContent = "";
+        // get values
+        const email = form.email.value;
+        const name = form.name.value;
+        const password = form.password.value;
+        try {
+          const res = await fetch("/sign-up", {
+            method: "POST",
+            body: JSON.stringify({ email, name, password }),
+            headers: { "Content-Type": "application/json" },
+          });
+          const data = await res.json();
+          if (data.errors) {
+            passwordError.textContent = data.errors.password;
+          }
+          if (data.user) {
+            location.assign("/");
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      });
+    </script>
+  </body>
+</html>

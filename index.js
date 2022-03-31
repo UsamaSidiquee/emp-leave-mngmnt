@@ -1,33 +1,48 @@
-const express = require("express")
-//express app
-const app = express()
+const express = require("express");
+const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
+const morgan = require("morgan");
+const { checkUser, requireAuth } = require("./middleware/authMiddleware");
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
 
-app.use(express.static('public'))
-app.set('view engine', "ejs")
+require("dotenv").config();
+
+const app = express();
+
+//middleware
+app.use(express.static("public"));
+app.use(express.json());
+app.use(cookieParser());
+app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
-//this code for making server
-app.listen(3000, ()=>{
-  console.log("Listening on port 3000")  
-})
 
-app.get("/", (req,res)=>{
-  res.render("index")
-})
+//connect to database
+app.listen(process.env.PORT, () => {
+  console.log(`listening on port ${process.env.PORT}`);
+});
 
-//this code for apply leave page
-app.post("/", (req,res)=>{
-    res.render("admin-page", {title: "usmea"})
-})
+const dbURI = process.env.MONGO_URI;
 
-app.get("/leave/create",(req, res)=>{
-  res.render("create",{ title: "creat a leave"});
-})
+mongoose
+  .connect(dbURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  })
+  .then(() => console.log("DB Connected"))
+  .catch((err) => console.log(err));
 
-app.post("/", (req,res)=>{
-    res.render("admin-page")
-})
-    
-app.post("/", (req,res)=>{
-    res.render("admin-page")
-    // res.render("index", { error: "Invalid Id or Password"})
-})
+// view engine
+app.set("view engine", "ejs");
+
+app.get("*", checkUser);
+
+// ** blog Routes
+app.use(authRoutes);
+// ** keep auth routes above only else infinite redirects
+app.use(userRoutes);
+
+app.use((req, res) => {
+  res.status(404).render("404", { title: "Lost Page" });
+});
