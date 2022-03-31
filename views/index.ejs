@@ -1,42 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <link rel="stylesheet" href="/styles/log-in.css">
-    <script src="https://kit.fontawesome.com/9b31e77fc6.js" crossorigin="anonymous"></script>
-</head>
-<body>
-<div class="container">
-    <div class="screen">
-        <div class="screen__content">
-            <img src="/images/ltgrouplogo.png" class="logo-image" alt="">
-            <form class="login" method="POST" action="/">
-                <div class="login__field">
-                    <i class="login__icon fas fa-user"></i>
-                    <input name="user_name" type="text" class="login__input" placeholder="User name / Email">
-                </div>
-                <div class="login__field">
-                    <i class="login__icon fas fa-lock"></i>
-                    <input name="user_password" type="password" class="login__input" placeholder="Password">
-                </div>
-                <div class="login__field">
-                </div>
-                <button class="button login__submit">
-                    <span class="button__text">Log In Now</span>
-                    <i class="button__icon fas fa-chevron-right"></i>
-                </button>
-            </form>
-        </div>
-        <div class="screen__background">
-            <span class="screen__background__shape screen__background__shape4"></span>
-            <span class="screen__background__shape screen__background__shape3"></span>
-            <span class="screen__background__shape screen__background__shape2"></span>
-            <span class="screen__background__shape screen__background__shape1"></span>
-        </div>
+  <head>
+    <meta charset="utf-8" />
+    <%- include('./partials/head.ejs') %>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css"
+    />
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          const res = await fetch("/all-leaves", {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          });
+          const data = await res.json();
+          if (data.errors) {
+            console.log(data.errors);
+          }
+          if (data.leaves) {
+            var calendarEl = document.getElementById("calendar");
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+              aspectRatio: 1,
+              initialView: "dayGridMonth",
+            });
+            calendar.render();
+            const events = data.leaves.map((leave) => {
+              return {
+                id: leave._id,
+                title: leave.type,
+                allDay: true,
+                start: new Date(leave.dateOfLeave).toISOString().split("T")[0],
+              };
+            });
+            console.log(events);
+            calendar.setOption("events", events);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <%- include('./partials/nav.ejs') %>
+    <div style="max-width: 450px" class="container mt-5 mb-5">
+      <div id="calendar"></div>
     </div>
-</div>
-</body>
+  </body>
+  <%- include('./partials/footer.ejs') %>
 </html>

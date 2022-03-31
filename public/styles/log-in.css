@@ -22,7 +22,7 @@ body {
   background: linear-gradient(90deg, #5d54a4, #7c78b8);
   position: relative;
   height: 600px;
-  width: 360px;
+  width: 400px;
   box-shadow: 0px 0px 24px #5c5696;
   border-radius: 10px;
   overflow: hidden;
@@ -87,9 +87,9 @@ body {
 }
 
 .login {
-  width: 320px;
+  width: 390px;
   padding: 30px;
-  padding-top: 80px;
+  padding-top: 40px;
 }
 
 .login__field {
@@ -143,6 +143,10 @@ body {
   box-shadow: 0px 2px 2px #5c5696;
   cursor: pointer;
   transition: 0.2s;
+}
+
+.error {
+  color: crimson;
 }
 
 .login__submit:active,
