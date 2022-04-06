@@ -15,5 +15,6 @@ router.post("/user/apply-leave", leaveController.leave_create_post);
 router.get("/user/view-requests", leaveController.leave_requests);
 router.get("/user/leave-approve", leaveController.leave_approve);
 router.get("/user/leave-reject", leaveController.leave_reject);
+router.delete("/user/leave-delete", leaveController.leave_delete);
 
 module.exports = router;

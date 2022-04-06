@@ -60,7 +60,7 @@ const curr_year = date.getFullYear();
 const todaysDate = curr_year + "-" + curr_month + "-" + curr_date;
 const yearFromNow = curr_year + 1 + "-" + curr_month + "-" + curr_date;
 
-const leave_create_get = (req, res) => {
+const leave_create_get = (_req, res) => {
   res.render("create-leave-page", {
     title: "Create a new blog",
     todaysDate,
@@ -98,7 +98,7 @@ const leave_create_post = (req, res) => {
     });
 };
 
-const leave_requests = (req, res) => {
+const leave_requests = (_req, res) => {
   if (res.locals.user?.isAdmin) {
     Leave.find({ status: "NOT-APPROVED" })
       .populate("user")
@@ -137,7 +137,8 @@ const leave_reject = (req, res) => {
   if (res.locals.user?.isAdmin) {
     const id = req.query.id;
     Leave.updateOne({ _id: id }, { status: "REJECTED" })
-      .then(() => {
+      .then((result) => {
+        console.log(result);
         res.json({ redirect: "/" });
       })
       .catch((err) => {
@@ -149,7 +150,7 @@ const leave_reject = (req, res) => {
 };
 
 const leave_delete = (req, res) => {
-  const id = req.params.id;
+  const id = req.query.id;
   Leave.findByIdAndDelete(id)
     .then(() => {
       res.json({ redirect: "/" });
@@ -163,6 +164,7 @@ module.exports = {
   leave_index,
   get_all_leaves,
   get_approved_leaves,
+  leave_create_get,
   leave_details,
   leave_create_get,
   leave_create_post,
