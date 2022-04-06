@@ -17,12 +17,13 @@ const leaveSchema = new Schema(
       default: "FULL",
     },
     user: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "user",
       required: [true, "User Not Found, Login And try Again"],
     },
     status: {
       type: String,
-      enum: ["NOT-APPROVED", "APPROVED"],
+      enum: ["NOT-APPROVED", "APPROVED", "REJECTED"],
       default: "NOT-APPROVED",
     },
   },

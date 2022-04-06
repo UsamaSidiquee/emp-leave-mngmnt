@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <%- include('./partials/head.ejs') %>
+  </head>
+  <body>
+    <%- include('./partials/nav.ejs') %> <% if (leaves.length < 1) { %>
+    <div class="container-md my-2 p-2">
+      <p class="m-5">No Requests to approve</p>
+    </div>
+    <% } else { %> <% leaves.forEach(leave => { %>
+    <div class="container-md my-2 p-2 d-flex justify-content-between">
+      <div>
+        <p class="m-0"><%= leave.user.name %></p>
+        <p class="m-0"><%= leave.reason %></p>
+        <p class="m-0"><%= leave.status %></p>
+        <p class="m-0"><%= new Date(leave.dateOfLeave).toLocaleString() %></p>
+      </div>
+      <div class="my-auto">
+        <i
+          onclick="acceptReq('<%- leave._id%>')"
+          class="fa-2xl fa-solid fa-check bg-success p-4 rounded accept"
+        ></i>
+        <i
+          onclick="rejectReq('<%- leave._id%>')"
+          class="fa-2xl fa-solid fa-xmark bg-danger p-4 rounded delete"
+        ></i>
+      </div>
+    </div>
+    <% }) %> <% } %>
+  </body>
+  <script>
+    function acceptReq(id) {
+      const endpoint = `/user/leave-approve?id=${id}`;
+      fetch(endpoint, {
+        method: "GET",
+      })
+        .then((response) => response.json())
+        .then((data) => (window.location.href = "/user/view-requests"))
+        .catch((err) => console.log(err));
+    }
+    function rejectReq(id) {
+      const endpoint = `/user/leave-reject?id=${id}`;
+      fetch(endpoint, {
+        method: "GET",
+      })
+        .then((response) => response.json())
+        .then((data) => (window.location.href = "/user/view-requests"))
+        .catch((err) => console.log(err));
+    }
+  </script>
+  <%- include('./partials/footer.ejs') %>
+</html>
