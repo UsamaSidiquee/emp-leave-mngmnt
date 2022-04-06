@@ -9,15 +9,23 @@
       <h4 class="my-3 text-center">Apply Leave</h4>
       <form class="form">
         <div class="col-md-6 mb-3">
-          <label for="firstName">Reason</label>
-          <input
+          <label for="reason">Reason</label>
+          <select
+            class="form-select d-block w-100"
+            id="reason"
             type="text"
             class="form-control"
-            id="reason"
-            placeholder="Reason"
             required
-          />
-          <div class="invalid-feedback">Valid first name is required.</div>
+          >
+            <option value="">Reason</option>
+            <option value="Sick Leave">Sick Leave</option>
+            <option value="Maternity/Paternity">Maternity/Paternity</option>
+            <option value="Betterment">Betterment</option>
+            <option value="Jury Duty">Jury Duty</option>
+            <option value="Time off w/o pay">Time off w/o pay</option>
+            <option value="Wedding">Wedding</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
         <div class="col-md-6 mb-3">
           <label for="lastName">Date</label>
@@ -33,13 +41,12 @@
           <div class="invalid-feedback">Valid last name is required.</div>
         </div>
         <div class="col-md-6 mb-3">
-          <label for="country">Country</label>
-          <select class="custom-select d-block w-100" id="type" required>
+          <label for="time">Time</label>
+          <select class="form-select d-block w-100" id="type" required>
             <option value="">Time</option>
             <option value="FULL">Full Day</option>
             <option value="HALF">Half Day</option>
           </select>
-          <div class="invalid-feedback">Please select a valid country.</div>
         </div>
 
         <div class="col-md-6 mb-3">

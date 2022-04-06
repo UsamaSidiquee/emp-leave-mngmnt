@@ -17,7 +17,7 @@
         <p class="m-0"><%= leave.status %></p>
         <p class="m-0"><%= new Date(leave.dateOfLeave).toLocaleString() %></p>
       </div>
-      <div class="my-auto">
+      <div class="my-auto" style="cursor: pointer">
         <i
           onclick="deleteReq('<%- leave._id %>')"
           class="fa-2xl fa-solid fa-trash bg-danger text-light p-4 rounded delete"
@@ -33,7 +33,7 @@
         method: "DELETE",
       })
         .then((response) => response.json())
-        .then((data) => (window.location.href = "/user/view-all-leaves"))
+        .then((data) => (window.location.href = "/all-leaves"))
         .catch((err) => console.log(err));
     }
   </script>
