@@ -1,6 +1,6 @@
 <div class="container p-0">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="/">
       <img class="img" src="/images/ltgrouplogo.png" />
     </a>
     <button
@@ -27,38 +27,49 @@
         </li>
         <li class="nav-item mr-2 dropdown">
           <a
+            a
             class="nav-link dropdown-toggle"
-            href="/user"
+            href="#"
             id="navbarDropdownMenuLink"
-            data-toggle="dropdown"
-            aria-haspopup="true"
+            role="button"
+            data-bs-toggle="dropdown"
             aria-expanded="false"
           >
             Apply Leave
           </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="/user/apply-leave">Apply Leave</a>
-            <a class="dropdown-item" href="/user/apply-swipe">Apply Swipe</a>
-            <a class="dropdown-item" href="/user/view-attendence"
-              >View Attendence</a
-            >
-          </div>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li>
+              <a class="dropdown-item" href="/user/apply-leave">Apply Leave</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="/all-leaves">All Leaves</a>
+            </li>
+            <% if (user.isAdmin) { %>
+            <li>
+              <a class="dropdown-item" href="/user/view-requests">
+                View All Requests
+              </a>
+            </li>
+            <% } %>
+          </ul>
         </li>
         <li class="nav-item mr-2 dropdown">
           <a
             class="nav-link dropdown-toggle"
-            href="#"
+            href="/"
             id="navbarDropdownMenuLink"
-            data-toggle="dropdown"
-            aria-haspopup="true"
+            role="button"
+            data-bs-toggle="dropdown"
             aria-expanded="false"
           >
             <%= user.name %>
           </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="#">View Profile</a>
-            <a href="./log-out" class="dropdown-item" href="#">Logout</a>
-          </div>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="#">View Profile</a></li>
+            <li>
+              <a href="/log-out" class="dropdown-item" href="#">Logout</a>
+            </li>
+          </ul>
         </li>
       </ul>
     </div>

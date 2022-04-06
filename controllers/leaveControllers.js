@@ -1,9 +1,7 @@
 const Leave = require("../models/leaveModel");
-const User = require("../models/userModel");
-const jwt = require("jsonwebtoken");
 const handleErrors = require("../utils/leaveErrorHandler");
 
-const leave_index = (req, res) => {
+const leave_index = (_req, res) => {
   Leave.find({
     user: res.locals.user._id,
   })
@@ -16,9 +14,23 @@ const leave_index = (req, res) => {
     });
 };
 
-const get_all_leaves = (req, res) => {
+const get_all_leaves = (_req, res) => {
   Leave.find({
     user: res.locals.user._id,
+  })
+    .sort({ createdAt: -1 })
+    .then((result) => {
+      res.render("view-all-leaves", { title: "All Leaves", leaves: result });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const get_approved_leaves = (_req, res) => {
+  Leave.find({
+    user: res.locals.user._id,
+    status: "APPROVED",
   })
     .sort({ createdAt: -1 })
     .then((result) => {
@@ -86,14 +98,45 @@ const leave_create_post = (req, res) => {
     });
 };
 
-const leave_approve_get = (req, res) => {
-  res.send("hal");
+const leave_requests = (req, res) => {
+  if (res.locals.user?.isAdmin) {
+    Leave.find({ status: "NOT-APPROVED" })
+      .populate("user")
+      .then((result) => {
+        console.log(result);
+        res.render("view-requests", {
+          title: "View Requests",
+          leaves: result,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else {
+    res.send({ error: "You are not allowed" });
+  }
 };
 
-const leave_approve_post = (req, res) => {
+const leave_approve = (req, res) => {
   if (res.locals.user?.isAdmin) {
-    const id = req.params.id;
-    Leave.findOneAndUpdate({ _id: id }, { status: "APPROVED" })
+    const id = req.query.id;
+    Leave.updateOne({ _id: id }, { status: "APPROVED" })
+      .then((result) => {
+        console.log(result);
+        res.json({ redirect: "/" });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else {
+    res.send({ error: "You are not allowed" });
+  }
+};
+
+const leave_reject = (req, res) => {
+  if (res.locals.user?.isAdmin) {
+    const id = req.query.id;
+    Leave.updateOne({ _id: id }, { status: "REJECTED" })
       .then(() => {
         res.json({ redirect: "/" });
       })
@@ -119,10 +162,12 @@ const leave_delete = (req, res) => {
 module.exports = {
   leave_index,
   get_all_leaves,
+  get_approved_leaves,
   leave_details,
   leave_create_get,
   leave_create_post,
-  leave_approve_get,
-  leave_approve_post,
+  leave_requests,
+  leave_approve,
+  leave_reject,
   leave_delete,
 };
